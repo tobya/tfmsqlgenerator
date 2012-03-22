@@ -1,0 +1,606 @@
+<html>
+<head>
+<title>BASIC OVERVIEW OF class.tfm.sqlquery.inc</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<div align="center">
+  <h3><b>class.tfm.sqlquery.inc</b></h3>
+  <h3>&nbsp;</h3>
+</div>
+<div align="left">
+  <p><b>Version 0.5</b></p>
+  <p>This class is still very much a work in progress, I will not make any claims 
+    about it always providing correct sql or even giving useful error messages 
+    when it does not. However I found it very useful in a number of applications 
+    I have done on the web. Further comments in the source code for class.tfm.sqlquery.inc 
+    . <a href="mailto:scripts.sql@toflidium.com">Contact me</a> with with queries, 
+    suggestions, or additions. I hope someone finds it useful. If you redistribute 
+    it or use it in an application, please at least keep my copyright notice in 
+    place.</p>
+  <p><b>Security</b></p>
+  <p>I am aware that passing fieldnames around in POST data is a security risk, 
+    there are probably numerous ways around this.</p>
+  <p>This page provides a form with various options for using the class. I've 
+    tried to include comments with each form indicating what particular aspect 
+    of the class it is using.</p>
+  <b><font color="#0066FF">Basic Form</font></b> 
+  <form name="form1" method="post" action="showresults.php">
+    <font color="#333333">This form requires only one hidden field 'tablename' 
+    <input type="hidden" name="table" value="Clients">
+    . The Form fields are then named fldFieldName_Operator for the Select and 
+    fldFieldName_Value for the text box. </font> 
+    <table border="0" cellspacing="2" cellpadding="2" align="left" width="348" bordercolor="#FFFFCC" bgcolor="#FFFFCC">
+      <tr align="left" valign="top"> 
+        <td><font color="#333333">Client Name</font></td>
+        <td> <font color="#333333"> 
+          <select name="fldClientName_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td valign="top"> <font color="#333333"> 
+          <input type=text name=fldClientName_Value >
+          </font></td>
+      </tr>
+      <tr align="left" valign="top"> 
+        <td><font color="#333333">Client Address</font></td>
+        <td align="left" valign="top"> <font color="#333333"> 
+          <select name="fldClientAddress_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td valign="top" align="left"> <font color="#333333"> 
+          <input type=text name=fldClientAddress_Value >
+          </font></td>
+      </tr>
+      <tr align="left" valign="top"> 
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td> <font color="#333333"> 
+          <input type="submit" name="Submit" value="Submit">
+          </font></td>
+      </tr>
+    </table>
+  </form>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <b><font color="#0066FF">Join Form </font></b> 
+  <form name="form2" method="post" action="showresults.php">
+    <p> 
+      <input type="hidden" name="join" value="Clients inner join Orders on Clients.ClientID  = Orders.ClientID ">
+      <input type="hidden" name="selectfields" value="ClientName, ClientAddress, ProductCode, UnitsOrdered">
+      This form uses a 'join' hidden field to join two tables together for a query. 
+      It also uses a hidden field 'selectfields' to specify which fields should 
+      be retuned. The other fields work in the same way.</p>
+    <table border="1" cellspacing="2" cellpadding="2" bgcolor="#CC6699">
+      <tr align="left" valign="top" bgcolor="#CC6699" bordercolor="#FFFFCC"> 
+        <td><font color="#333333">Client Name</font></td>
+        <td> <font color="#333333"> 
+          <select name="fldClientName_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td valign="top"> <font color="#333333"> 
+          <input type=text name=fldClientName_Value >
+          </font></td>
+      </tr>
+      <tr align="left" valign="top" bgcolor="#CC6699" bordercolor="#FFFFCC"> 
+        <td><font color="#333333">Client Address</font></td>
+        <td align="left" valign="top"> <font color="#333333"> 
+          <select name="fldClientAddress_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td valign="top" align="left"> <font color="#333333"> 
+          <input type=text name=fldClientAddress_Value >
+          </font></td>
+      </tr>
+      <tr bgcolor="#CC6699"> 
+        <td>Product Code</td>
+        <td><font color="#333333"> 
+          <select name="fldProductCode_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td><font color="#333333"> 
+          <input type=text name=fldProductCode_Value >
+          </font></td>
+      </tr>
+	  
+      <tr bgcolor="#CC6699"> 
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td><font color="#333333"> 
+          <input type="submit" name="Submit2" value="Submit">
+          </font></td>
+      </tr>
+    </table>
+  </form>
+  <p>&nbsp;</p>
+  <p><b><font color="#0066FF">Join Form with Alias</font></b> </p>
+  <form name="form2" method="post" action="showresults.php">
+    <p> 
+      <input type="hidden" name="join" value="Clients inner join Orders on Clients.ClientID  = Orders.ClientID ">
+      <input type="hidden" name="aliasClientID" value="Clients.ClientID">
+      This form uses a join hidden field to join two tables together for a query. 
+      It also adds an alias for a field that might cause a problem eg. CustomerID, 
+      as this field exists in both tables in the join. The 'selectfields' hidden 
+      field has been removed and the default is *. The other fields work in the 
+      same way.</p>
+    <table border="1" cellspacing="2" cellpadding="2" bgcolor="#CC6699">
+      <tr bgcolor="#0066FF"> 
+        <td>ClientID</td>
+        <td> <font color="#333333"> 
+          <select name="fldClientID_Operator">
+            <option value="blank"></option>
+
+            <option value="eq">Is Equal to</option>
+
+          </select>
+          </font></td>
+        <td><font color="#333333"> 
+          <input type=text name=fldClientID_Value >
+          </font></td>
+      </tr>	
+      <tr align="left" valign="top" bgcolor="#0066FF" bordercolor="#FFFFCC"> 
+        <td><font color="#333333">Client Name</font></td>
+        <td> <font color="#333333"> 
+          <select name="select">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td valign="top"> <font color="#333333"> 
+          <input type=text name=fldClientName_Value2 >
+          </font></td>
+      </tr>
+      <tr align="left" valign="top" bgcolor="#0066FF" bordercolor="#FFFFCC"> 
+        <td><font color="#333333">Client Address</font></td>
+        <td align="left" valign="top"> <font color="#333333"> 
+          <select name="select">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td valign="top" align="left"> <font color="#333333"> 
+          <input type=text name=fldClientAddress_Value2 >
+          </font></td>
+      </tr>
+      <tr bgcolor="#0066FF"> 
+        <td>Product Code</td>
+        <td> <font color="#333333"> 
+          <select name="fldProductCode_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td><font color="#333333"> 
+          <input type=text name=fldProductCode_Value>
+          </font></td>
+      </tr>
+      <tr bgcolor="#0066FF"> 
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td><font color="#333333"> 
+          <input type="submit" name="Submit22" value="Submit">
+          </font></td>
+      </tr>
+    </table>
+  </form>
+  <p>&nbsp;</p>
+  <p><b><font color="#0066FF">Lots more fields</font></b></p>
+  <form  method="post" action="showresults.php">
+    <p> 
+      <input type="hidden" name="join" value="Clients inner join Orders on Clients.ClientID  = Orders.ClientID ">
+      <input type="hidden" name="aliasClientID" value="Clients.ClientID">
+      <input type="hidden" name="orderby" value="ClientName">
+      This form also uses the orderby field.</p>
+    <p>&nbsp;</p>
+    <table border="1" cellspacing="2" cellpadding="2" bgcolor="#CC6699">
+      <tr bgcolor="#3399CC"> 
+        <td>ClientID</td>
+        <td> <font color="#333333"> 
+          <select name="fldClientID_Operator">
+            <option value="blank"></option>
+
+            <option value="eq">Is Equal to</option>
+
+          </select>
+          </font></td>
+        <td><font color="#333333"> 
+          <input type=text name=fldClientID_Value >
+          </font></td>
+      </tr>	
+      <tr align="left" valign="top" bgcolor="#3399CC" bordercolor="#FFFFCC"> 
+        <td><font color="#333333">Client Name</font></td>
+        <td> <font color="#333333"> 
+          <select name="select">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td valign="top"> <font color="#333333"> 
+          <input type=text name=fldClientName_Value2 >
+          </font></td>
+      </tr>
+      <tr align="left" valign="top" bgcolor="#3399CC" bordercolor="#FFFFCC"> 
+        <td><font color="#333333">Client Address</font></td>
+        <td align="left" valign="top"> <font color="#333333"> 
+          <select name="select">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td valign="top" align="left"> <font color="#333333"> 
+          <input type=text name=fldClientAddress_Value2 >
+          </font></td>
+      </tr>
+      <tr bgcolor="#3399CC"> 
+        <td>Product Code</td>
+        <td> <font color="#333333"> 
+          <select name="fldProductCode_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+          </font></td>
+        <td><font color="#333333"> 
+          <input type=text name=fldProductCode_Value>
+          </font></td>
+      </tr>
+      <tr bgcolor="#3399CC"> 
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td><font color="#333333"> 
+          <input type="submit" name="Submit22" value="Submit">
+          </font></td>
+      </tr>
+    </table>
+
+      
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+  </form>
+  <p><b>Extensive use of aliases </b></p>
+  <p>&nbsp;</p>
+  <p>I copied this from a webform I'm using it in, so my apologies that it is 
+    horribly formatted, and probably a bit difficult to understand, but basically 
+    this uses aliases extensively. In order for the user to be able to choose 
+    which fields they want to search on each select is simply named aliasField0, 
+    aliasField1 etc, with the value then assigned by the user on selection. the 
+    operator is then named fldField0_Operator, fldField1_Operator, and the same 
+    with the value. So the form is submitted with a whole load of alias fields, 
+    and the values assigned to them via the select boxes and fldField0_Opertor 
+    and fldField0_Value etc.</p>
+  <p>The class then replaces all the aliases providing the correct sql.</p>
+  <p>This form also uses the Prefix facility, If you provide a value for the Total 
+    Cost field you will see it provides a second sql statement using only the 
+    fields in the form prefixed with 'Total'.</p>
+  <Form Action=showresults.php method=post>
+
+	<input type=hidden name=datefields value="fldCCRecievedDate">
+	
+	<Table >
+      <TR>
+        <TD width="12%"></TD>
+        <TD width="20%"><b>Field to Search</b></TD>
+        <TD width="26%"><b>Match</b></TD>
+        <TD width="38%"><b>Value</b></TD>
+      </TR>
+      <TR>
+        <TD width="12%"></TD>
+        <TD width="20%"> 
+          <Select name=aliasField0>
+            <Option value='' selected >Select a field</Option>
+            <Option value='ShiptoCountry' >Delivery Country </Option>
+            <Option value='Concat(ShiptoAddress1,ShiptoAddress2,ShiptoTown,ShiptoCounty,ShiptoZip,ShiptoCountry)' >Full 
+            Delivery Address </Option>
+            <Option value='InvoiceCountry' >Billing Country </Option>
+            <Option value='Concat(InvoiceAddress1,InvoiceAddress2,InvoiceTown,InvoiceCounty,InvoiceZip,InvoiceCountry)' >Full 
+            Billing Address </Option>
+            <Option value='CCRecievedDate' >Order Date </Option>
+            <Option value='Code' >Product Code </Option>
+            <Option value='Concat(Name, Category, Keywords)' >Product Description</Option>
+          </Select>
+        </TD>
+        <TD width="26%"> 
+          <select name="fldField0_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+        </TD>
+        <TD width="38%"> 
+          <Input type=text name=fldField0_Value >
+        </TD>
+        <TD width="4%"></TD>
+      </TR>
+      <TR>
+        <TD width="12%"></TD>
+        <TD width="20%"> 
+          <Select name=aliasField1>
+            <Option value='' selected >Select a field</Option>
+            <Option value='ShiptoCountry' >Delivery Country </Option>
+            <Option value='Concat(ShiptoAddress1,ShiptoAddress2,ShiptoTown,ShiptoCounty,ShiptoZip,ShiptoCountry)' >Full 
+            Delivery Address </Option>
+            <Option value='InvoiceCountry' >Billing Country </Option>
+            <Option value='Concat(InvoiceAddress1,InvoiceAddress2,InvoiceTown,InvoiceCounty,InvoiceZip,InvoiceCountry)' >Full 
+            Billing Address </Option>
+            <Option value='CCRecievedDate' >Order Date </Option>
+            <Option value='Code' >Product Code </Option>
+            <Option value='Concat(Name, Category, Keywords)' >Product Description</Option>
+          </Select>
+        </TD>
+        <TD width="26%"> 
+          <select name="fldField1_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+        </TD>
+        <TD width="38%"> 
+          <Input type=text name=fldField1_Value >
+        </TD>
+
+      </TR>
+      <TR>
+        <TD width="12%"></TD>
+        <TD width="20%"> 
+          <Select name=aliasField2>
+            <Option value='' selected >Select a field</Option>
+            <Option value='ShiptoCountry' >Delivery Country </Option>
+            <Option value='Concat(ShiptoAddress1,ShiptoAddress2,ShiptoTown,ShiptoCounty,ShiptoZip,ShiptoCountry)' >Full 
+            Delivery Address </Option>
+            <Option value='InvoiceCountry' >Billing Country </Option>
+            <Option value='Concat(InvoiceAddress1,InvoiceAddress2,InvoiceTown,InvoiceCounty,InvoiceZip,InvoiceCountry)' >Full 
+            Billing Address </Option>
+            <Option value='CCRecievedDate' >Order Date </Option>
+            <Option value='Code' >Product Code </Option>
+            <Option value='Concat(Name, Category, Keywords)' >Product Description</Option>
+          </Select>
+        </TD>
+        <TD width="26%"> 
+          <select name="fldField2_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+        </TD>
+        <TD width="38%"> 
+          <Input type=text name=fldField2_Value >
+        </TD>
+        <TD width="4%"></TD>
+      </TR>
+      <TR>
+        <TD width="12%"></TD>
+        <TD width="20%"> 
+          <Select name=aliasField3>
+            <Option value='' selected >Select a field</Option>
+            <Option value='ShiptoCountry' >Delivery Country </Option>
+            <Option value='Concat(ShiptoAddress1,ShiptoAddress2,ShiptoTown,ShiptoCounty,ShiptoZip,ShiptoCountry)' >Full 
+            Delivery Address </Option>
+            <Option value='InvoiceCountry' >Billing Country </Option>
+            <Option value='Concat(InvoiceAddress1,InvoiceAddress2,InvoiceTown,InvoiceCounty,InvoiceZip,InvoiceCountry)' >Full 
+            Billing Address </Option>
+            <Option value='CCRecievedDate' >Order Date </Option>
+            <Option value='Code' >Product Code </Option>
+            <Option value='Concat(Name, Category, Keywords)' >Product Description</Option>
+          </Select>
+        </TD>
+        <TD width="26%"> 
+          <select name="fldField3_Operator">
+            <option value="blank"></option>
+            <option value="lk">Contains</option>
+            <option value="lkb">Begins With</option>
+            <option value="lke">Ends With</option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+        </TD>
+        <TD width="38%"> 
+          <Input type=text name=fldField3_Value >
+        </TD>
+        <TD width="4%"></TD>
+      </TR>
+      <tr> 
+        <TD width="12%"></TD>
+        <td width="20%"> 
+          <Select >
+            <Option>Total Cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Option>
+          </Select>
+        </TD>
+        <TD width="26%"> 
+          <input type=hidden name=TotalaliasTotalPurchased value=" Sum(tblordereditems.Quantity * tblproducts.Price) ">
+          <input type=hidden name=Totalgroupby value='OrderID'>
+          <select name="TotalfldTotalPurchased_Operator">
+            <option value="blank"></option>
+            <option value="eq">Is Equal to</option>
+            <option value="gt">Is Greater Than</option>
+            <option value="lt">Is Less Than</option>
+          </select>
+        </td>
+        <td width="38%"> 
+          <input type="text" name="TotalfldTotalPurchased_Value" value=0 >
+        </td>
+      </tr>
+      <tr>
+        <TD width="12%"></TD>
+        <td width="20%"> 
+          <Select >
+            <Option>Mailing List &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Option>
+          </Select>
+        </TD>
+        <TD width="26%"> 
+          <select name="fldMailList_Operator">
+            <option value="blank"></option>
+            <option value="eq">Is Equal to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          </select>
+        </td>
+        <td width="38%"> 
+          <select name="fldMailList_Value">
+            <option value="blank"></option>
+            <option value="10">Yes</option>
+            <option value="0">No</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <TD width="12%"></TD>
+        <td width="20%"> 
+          <Select >
+            <Option>Is a Gift &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Option>
+          </Select>
+        </TD>
+        <TD width="26%"> 
+          <select name="fldIsGift_Operator">
+            <option value="blank"></option>
+            <option value="eq">Is Equal to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          </select>
+        </td>
+        <td width="38%"> 
+          <select name="fldIsGift_Value">
+            <option value="blank"></option>
+            <option value="10">Yes</option>
+            <option value="0">No</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <TD width="12%"></TD>
+        <td width="20%"> 
+          <Select >
+            <Option>Record Type &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Option>
+          </Select>
+        </TD>
+        <TD width="26%"> 
+          <select name="fldRecordType_Operator">
+            <option value="blank"  ></option>
+            <option value="eq" selected>Is Equal to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+            <option value="not">Not Equal to</option>
+          </select>
+        </td>
+        <td width="38%"> 
+          <select name="fldRecordType_Value">
+            <option value="" Selected ></option>
+            <option value="Order" selected>Orders</option>
+            <option value="Circle">Circle</option>
+            <option value="Catalogue Download">Catalogue Download</option>
+            <option value="Catalogue Request">Catalogue Request</option>
+          </select>
+        </td>
+      </tr>
+      <tr> 
+        <TD width="12%"></TD>
+        <td width="20%"> <Font size=2> Group Totals By</Font></TD>
+        <TD width="26%"> 
+          <input type=hidden name=aliasMonth value="CCRecievedDate" >
+          <select name="orderby">
+            <option value="Month" selected >Month of Order</option>
+            <option value="CCRecievedDate" >Date of Order</option>
+            <option value="InvoiceCounty">Billing County</option>
+            <option value="InvoiceCountry">Billing Country</option>
+            <option value="ShiptoCounty">Delivery County</option>
+            <option value="ShiptoCountry">Delivery Country</option>
+            <option value="IsGift">Is a Gift</option>
+            <option value="MailList">On Mailing List</option>
+          </select>
+        </td>
+        <td width="38%"> </td>
+      </tr>
+    </Table>		
+	<input type=hidden value=gt name=fldOrderStatus_Operator>
+	<input type=hidden value=9 name=fldOrderStatus_Value>	
+	<input type=hidden name=table value=tblorders>
+	 	<input type=hidden name=selectfields value='Distinct tblorders.OrderID, tblordereditems.OrderID as OrderedItemOrderID'>
+	<input type=hidden name=join value='tblorders left outer join tblordereditems on tblorders.OrderID = tblordereditems.OrderID left outer join tblproducts on tblordereditems.ProductID = tblproducts.ProductID'>	
+	
+	
+	<input type=submit value=Search>
+	<Input type=Reset>
+	<input type=hidden name=Totaljoin value='tblordereditems inner join tblproducts on tblordereditems.ProductID = tblproducts.ProductID'>
+	 	<input type=hidden name=Totalselectfields value='tblordereditems.OrderID,Sum(tblordereditems.Quantity * tblproducts.Price) as TotalPurchased'>	
+		<input type=hidden name=Totalusehaving value='true'></Form>
+<p>&nbsp;</p></div>
+<div align="center"><i><b>Copyright <a href="mailto:scripts.sql@toflidium.com">Toby 
+  Allen</a> 2003 /<a href="http://www.toflidium.com"> www.toflidium.com</a></b></i></div>
+</body>
+</html>
